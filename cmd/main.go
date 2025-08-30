@@ -15,28 +15,22 @@ import (
 )
 
 func main() {
-	// Get API key from environment
 	henrikKey := os.Getenv("HENRIK_API_KEY")
 	if henrikKey == "" {
 		log.Fatal("Defina HENRIK_API_KEY como env var")
 	}
 
-	// Initialize providers
 	henrikClient := henrik.New(http.DefaultClient, henrikKey)
 
-	// Initialize services
 	analysisService := analysisservice.New(henrikClient)
 
-	// Initialize transport handlers
 	playerTransport := player.New(&analysisService)
 	
-	// Create main transport with all routers
 	httpTransport, err := transport.New(&playerTransport)
 	if err != nil {
 		log.Fatalf("Error creating transport: %v", err)
 	}
 
-	// Setup Fiber app
 	app := fiber.New(fiber.Config{
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -45,19 +39,16 @@ func main() {
 		},
 	})
 
-	// Setup CORS
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 		AllowMethods: "GET",
 	}))
 
-	// Setup routes
 	err = httpTransport.InitRoutes(app)
 	if err != nil {
 		log.Fatalf("Error initializing routes: %v", err)
 	}
 
-	// Start server
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"

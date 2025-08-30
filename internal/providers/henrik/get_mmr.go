@@ -18,7 +18,7 @@ func (c *Client) GetMMR(ctx context.Context, region, name, tag string) (*models.
 
 	var mmr models.MMR
 	if len(apiResp.Data) == 0 || string(apiResp.Data) == "null" {
-		mmr.CurrentTierPatched = "Unranked"
+		mmr.CurrentData.CurrentTierPatched = "Unranked"
 		return &mmr, nil
 	}
 

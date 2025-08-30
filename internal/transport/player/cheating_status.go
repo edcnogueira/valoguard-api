@@ -30,7 +30,5 @@ func (t *Transport) getCheatStatus(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(fiber.Map{
-		"probability": resp.Probability,
-	})
+	return c.JSON(resp)
 }

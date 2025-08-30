@@ -56,14 +56,6 @@ Valoguard API is a service that analyzes Valorant player statistics to detect po
 
    The API will start on port 8080 by default. You can change the port by setting the `PORT` environment variable.
 
-## Testing
-
-You can use the included test script to verify that the API is working correctly:
-
-```
-./test.sh
-```
-
 The script will build and run the API, then make a test request to analyze a player.
 
 ## API Endpoints
