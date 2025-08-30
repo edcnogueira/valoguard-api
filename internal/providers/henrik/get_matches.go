@@ -9,7 +9,7 @@ import (
 )
 
 func (c *Client) GetMatches(ctx context.Context, region, name, tag string) ([]models.Match, error) {
-	endpoint := fmt.Sprintf("/valorant/v3/matches/%s/%s/%s?mode=competitive&size=10", region, name, tag)
+	endpoint := fmt.Sprintf("/valorant/v4/matches/%s/pc/%s/%s?mode=competitive&size=10", region, name, tag)
 
 	apiResp, err := c.callAPI(ctx, endpoint)
 	if err != nil {
