@@ -114,6 +114,32 @@ The API calculates a "cheat score" based on several factors:
 
 The maximum score is 100, indicating a high probability of cheating.
 
+## Building the CLI with an embedded key (via Makefile)
+
+You can compile the CLI embedding the Henrik API key directly into the binary using the Makefile.
+
+Attention: replace HDEV-xxxx with your real key.
+
+### How to build the CLI with the embedded key
+- macOS/Linux/Windows (via Make):
+    - make build-cli API_KEY=HDEV-xxxx
+
+This will generate the binary at: bin/valoguard
+
+### How to run the CLI
+- bin/valoguard player cheating analyze --name "YourName" --tag "1234" [--region br]
+
+You can still override at runtime:
+- Via flag: bin/valoguard --api-key "your_key" player cheating analyze --name "YourName" --tag "1234"
+- Or via env: HENRIK_API_KEY="your_key" bin/valoguard player cheating analyze --name "YourName" --tag "1234"
+
+Important notes:
+- Precedence (CLI): flag --api-key > environment variable HENRIK_API_KEY > embedded key (Makefile/ldflags).
+- Using HENRIK_API_KEY=... go build does NOT embed the key; it only sets an env var for the build process. To embed, use the Makefile above.
+
+Note: The HTTP server needs no changes and continues to work as before (provide HENRIK_API_KEY via environment variable when running it).
+
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
@@ -122,3 +148,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - [HenrikDev Valorant API](https://docs.henrikdev.xyz/) for providing the data
 - [Fiber](https://github.com/gofiber/fiber) for the web framework
+- [Cobra](https://github.com/spf13/cobra) for the CLI framework
