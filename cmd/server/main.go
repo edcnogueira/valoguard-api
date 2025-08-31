@@ -25,7 +25,7 @@ func main() {
 	analysisService := analysisservice.New(henrikClient)
 
 	playerTransport := player.New(&analysisService)
-	
+
 	httpTransport, err := transport.New(&playerTransport)
 	if err != nil {
 		log.Fatalf("Error creating transport: %v", err)
