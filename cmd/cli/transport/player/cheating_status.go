@@ -2,11 +2,11 @@ package player
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
 
+	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/spf13/cobra"
 
 	"github.com/edcnogueira/valoguard-api/internal/models"
@@ -46,12 +46,22 @@ var (
 				return err
 			}
 
-			b, err := json.MarshalIndent(resp, "", "  ")
-			if err != nil {
-				return fmt.Errorf("failed to marshal response: %w", err)
+			t := table.NewWriter()
+			t.SetOutputMirror(os.Stdout)
+			t.SetStyle(table.StyleLight)
+			t.AppendHeader(table.Row{"#", "Match ID", "Score"})
+
+			for i, m := range resp.MatchSummary {
+				t.AppendRow(table.Row{i + 1, m.MatchID, m.Score})
+				t.AppendSeparator()
 			}
 
-			fmt.Println(string(b))
+			fmt.Printf("Cheating probability: %d%%\n", resp.Probability)
+			fmt.Printf("KD: %f\n", resp.Stats.KD)
+			fmt.Printf("Rank: %s\n", resp.Stats.Rank)
+			fmt.Printf("HS: %f%%\n", resp.Stats.HSPercent)
+			fmt.Printf("WinRate: %f%%\n\n", resp.Stats.WinRate)
+			t.Render()
 			return nil
 		},
 	}
